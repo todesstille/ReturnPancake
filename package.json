@@ -1,0 +1,19 @@
+{
+  "name": "@eth-tweaks/pancakeswap",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@pancakeswap/v3-core": "^1.0.2",
+    "@pancakeswap/v3-periphery": "^1.0.2",
+    "dotenv": "^16.4.5",
+    "ethers": "^6.13.2"
+  }
+}
