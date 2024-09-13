@@ -15,18 +15,13 @@ const token = new ethers.Contract(TOKEN_ADDRESS, erc20Abi, wallet);
 async function swapTokensForWBNB() {
     try {
         const tokenBalance = await token.balanceOf(wallet.address);
-        console.log(tokenBalance)
-        if (tokenBalance == 0) {
+        if (tokenBalance.toString() == "0") {
             console.log("No tokens to swap.");
             return;
         }
 
-        console.log(`Token Balance: ${ethers.formatUnits(tokenBalance, await token.decimals())} Tokens`);
-
-        const approveTx = await token.approve(PANCAKESWAP_ROUTER_ADDRESS, tokenBalance);
-        console.log(`Approving tokens... Transaction hash: ${approveTx.hash}`);
-        await approveTx.wait();
-        console.log('Approval successful');
+        let tx = await token.approve(PANCAKESWAP_ROUTER_ADDRESS, tokenBalance);
+        await tx.wait();
 
         const params = {
             tokenIn: TOKEN_ADDRESS,
@@ -39,13 +34,12 @@ async function swapTokensForWBNB() {
             sqrtPriceLimitX96: 0n
         };
 
-        const swapTx = await router.exactInputSingle(params, {
+        tx = await router.exactInputSingle(params, {
             gasLimit: 3000000n
         });
 
-        console.log(`Swapping tokens... Transaction hash: ${swapTx.hash}`);
-        await swapTx.wait();
-        console.log('Swap successful');
+        console.log("txHash:", tx.hash);
+        await tx.wait();
 
     } catch (error) {
         console.error('Error swapping tokens:', error);
